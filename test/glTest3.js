@@ -26,6 +26,8 @@ function main() {
         return
     }
 
+    
+
     vertexData.position = new Float32Array([
         -0.5, 0.5,
         -0.5, -0.5,
@@ -33,13 +35,8 @@ function main() {
         -0.5, -0.5,
         0.5, 0.5,
         0.5, -0.5,
-        1,0,0,
-        0,1,0,
-        0,0,1,
-        1,1,0,
-        1,0,1,
-        0,1,1,
     ]);
+    
     vertexData.color = new Float32Array([
         1,0,0,
         0,1,0,
@@ -49,17 +46,18 @@ function main() {
         0,1,1,
     ])
 
+    var vertexNum = vertexData.position.length / 2
+
 
     var vertices = new Float32Array([
         -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5
     ]);
-    
 
-    initVertexBuffer(vertexData.position);
+    initVertexBuffer(vertexData);
 
     gl.clear(gl.COLOR_BUFFER_BIT)
     // TRIANGLE_STRIP
-    gl.drawArrays(gl.TRIANGLES, 0, vertexData.position.length / 2);
+    gl.drawArrays(gl.TRIANGLES, 0, vertexNum);
 }
 
 function initVertexBuffer(vertexData) {
@@ -71,17 +69,19 @@ function initVertexBuffer(vertexData) {
 
     // var size = vertexData.position.byteLength + vertexData.color.byteLength
 
-    var FSIZE = vertexData.BYTES_PER_ELEMENT;
+    var FSIZE = Float32Array.BYTES_PER_ELEMENT;
 
     gl.bindBuffer(gl.ARRAY_BUFFER, VBO);
-    gl.bufferData(gl.ARRAY_BUFFER, vertexData, gl.STATIC_DRAW);
+    gl.bufferData(gl.ARRAY_BUFFER, 30 * FSIZE, gl.STATIC_DRAW);
 
+    gl.bufferSubData(gl.ARRAY_BUFFER, 0, vertexData.position);
     var posLocation = gl.getAttribLocation(gl.program, 'a_pos');
     gl.enableVertexAttribArray(posLocation);
-    gl.vertexAttribPointer(posLocation, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(posLocation, 2, gl.FLOAT, false, FSIZE * 2, 0);
 
+    gl.bufferSubData(gl.ARRAY_BUFFER, 12 * FSIZE, vertexData.color);
     var colorLocation = gl.getAttribLocation(gl.program, 'a_color');
     gl.enableVertexAttribArray(colorLocation);
-    gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, 0, 12 * FSIZE); 
+    gl.vertexAttribPointer(colorLocation, 3, gl.FLOAT, false, FSIZE * 3, 12 * FSIZE); 
 
 }
