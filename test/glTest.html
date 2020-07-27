@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+  </head>
+
+  <body onload="main()">
+    <canvas id="webgl" width="1280" height="720">
+    Please use a browser that supports "canvas"
+    </canvas>
+    
+
+    <script id="VS" type="vertexShader">
+        attribute vec4 a_pos;
+        void main() {
+            gl_Position = a_pos;
+            gl_PointSize = 10.0;
+        }
+    </script>
+
+    <script id="FS" type="fragmentShader">
+      void main(){
+        gl_FragColor = vec4(1.0, 0.0, 0.0, 1.0);
+      }
+    </script>
+
+    <script src="../lib/webgl-utils.js"></script>
+    <script src="../lib/webgl-debug.js"></script>
+    <script src="../lib/cuon-utils.js"></script>
+    <script src="glTest2.js"></script>
+  </body> 
+</html>
